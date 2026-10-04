@@ -234,9 +234,8 @@ function render(){
  :'<div class="card">No athletes have been registered yet.</div>';
 }
 
-document.getElementById('regForm').onsubmit=function(e){
+function registerAthlete(){
 
-  e.preventDefault();
   try{
 
     const aadhaar=document.getElementById('raadhaar').value.replace(/\D/g,'');
@@ -290,6 +289,18 @@ document.getElementById('regForm').onsubmit=function(e){
       document.getElementById('regForm').reset();
 
       location.hash='registration';
+
+      printID(id);
+    };
+
+    reader.readAsDataURL(photoFile);
+
+  }catch(error){
+
+    alert('Registration error: '+error.message);
+
+  }
+  }
 
       printID(id);
     };
