@@ -178,10 +178,21 @@ footer{background:#170000;color:#fff;padding:45px 0 20px}.foot{display:grid;grid
 
 <script>
 const key='cdpaAthletesV1', tk='cdpaTournamentsV1';
-let athletes=JSON.parse(localStorage.getItem(key)||'[]');
-let tournaments=JSON.parse(localStorage.getItem(tk)||'[]');
+let athletes=[];
+let tournaments=[];
 
-if(!tournaments.length)tournaments=[
+try{
+  athletes=JSON.parse(localStorage.getItem(key)||'[]');
+}catch(e){
+  athletes=[];
+}
+
+try{
+  tournaments=JSON.parse(localStorage.getItem(tk)||'[]');
+}catch(e){
+  tournaments=[];
+ }
+ if(!tournaments.length)tournaments=[
  {name:'CDPA District Powerlifting Championship',date:'',venue:'Chennai',status:'Upcoming'},
  {name:'CDPA District Bench Press Championship',date:'',venue:'Chennai',status:'Upcoming'}
 ];
