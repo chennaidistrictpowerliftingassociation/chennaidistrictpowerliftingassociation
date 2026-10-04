@@ -236,32 +236,31 @@ function render(){
   `<tr><td>${esc(r.disc)}</td><td>${esc(r.cat)}</td><td>${esc(r.lift)}</td><td>${esc(r.kg)}</td><td>${esc(r.athlete)}</td></tr>`
  ).join('');
 
- document.getElementById('athleteTable').innerHTML=athletes.length?
+ const approvedAthletes=athletes.filter(a=>
+  (a.status||'Pending')==='Approved'
+);
+
+document.getElementById('athleteTable').innerHTML=
+approvedAthletes.length?
 `<table><thead><tr>
 <th>Athlete ID</th>
 <th>Name</th>
 <th>Discipline</th>
 <th>Weight</th>
 <th>Club</th>
-<th>Status</th>
 </tr></thead>
-<tbody>${athletes.map(a=>`<tr>
+<tbody>
+${approvedAthletes.map(a=>`
+<tr>
 <td>${esc(a.id)}</td>
 <td>${esc(a.name)}</td>
 <td>${esc(a.discipline)}</td>
 <td>${esc(a.weight||'-')}</td>
 <td>${esc(a.club||'-')}</td>
-<td>
-<b>${esc(a.status||'Pending')}</b>
-${document.getElementById('adminPanel').classList.contains('hidden') ? '' : `
-<br>
-<button onclick="approveAthlete('${esc(a.id)}')">Approve</button>
-<button onclick="rejectAthlete('${esc(a.id)}')">Reject</button>
-`}
-</td>
-</tr>`).join('')}</tbody></table>`
-:'<div class="card">No athletes have been registered yet.</div>';
-}
+</tr>
+`).join('')}
+</tbody></table>`
+:'<div class="card">No approved athletes yet.</div>';
   
 function approveAthlete(id){
   const a=athletes.find(x=>x.id===id);
