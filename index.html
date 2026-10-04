@@ -247,7 +247,36 @@ function render(){
 </tr>`).join('')}</tbody></table>`
 :'<div class="card">No athletes have been registered yet.</div>';
 }
+  
+function approveAthlete(id){
+  const a=athletes.find(x=>x.id===id);
+  if(!a)return;
 
+  a.status='Approved';
+  a.rejectionReason='';
+
+  localStorage.setItem(key,JSON.stringify(athletes));
+  render();
+
+  alert('Athlete Approved: '+id);
+}
+
+function rejectAthlete(id){
+  const reason=prompt('Enter rejection reason:');
+
+  if(reason===null)return;
+
+  const a=athletes.find(x=>x.id===id);
+  if(!a)return;
+
+  a.status='Rejected';
+  a.rejectionReason=reason.trim();
+
+  localStorage.setItem(key,JSON.stringify(athletes));
+  render();
+
+  alert('Athlete Rejected: '+id);
+  }
 function registerAthlete(){
 
   try{
