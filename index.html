@@ -150,7 +150,7 @@ footer{background:#170000;color:#fff;padding:45px 0 20px}.foot{display:grid;grid
 <h3>Admin Login</h3>
 <p>Starter password: <b>CDPA1975</b> — change this before public deployment with a secure server-based login.</p>
 <input id="adminPass" type="password" placeholder="Password">
-<button class="btn" onclick="if(document.getElementById('adminPass').value==='CDPA1975'){document.getElementById('loginBox').classList.add('hidden');document.getElementById('adminPanel').classList.remove('hidden');}else{document.getElementById('loginMsg').innerHTML='<div class=&quot;notice&quot;>Incorrect password.</div>';}">Login</button><div id="loginMsg"></div>
+<button class="btn" onclick="alert(document.getElementById('adminPanel') ? 'ADMIN PANEL FOUND' : 'ADMIN PANEL NOT FOUND')">Login</button><div id="loginMsg"></div>
 </div>
 
 <div id="adminPanel" class="hidden">
