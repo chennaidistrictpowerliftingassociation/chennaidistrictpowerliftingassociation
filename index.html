@@ -154,6 +154,14 @@ footer{background:#170000;color:#fff;padding:45px 0 20px}.foot{display:grid;grid
 </div>
 
 <div id="adminPanel" class="hidden">
+  <div class="card" style="margin-bottom:20px">
+  <h3>Athlete Status</h3>
+  <button class="btn" onclick="filterAdminAthletes('All')">All</button>
+  <button class="btn" onclick="filterAdminAthletes('Pending')">Pending</button>
+  <button class="btn" onclick="filterAdminAthletes('Approved')">Approved</button>
+  <button class="btn dark" onclick="filterAdminAthletes('Rejected')">Rejected</button>
+  <div id="adminAthletes"></div>
+  </div>
 <div class="card"><div class="adminbar"><div><h3>Admin Dashboard</h3><p>Data stored in this browser for the demo version.</p></div>
 <button class="btn dark" onclick="logout()">Logout</button></div><hr>
 <h3>Add Tournament</h3>
@@ -283,6 +291,39 @@ function rejectAthlete(id){
   render();
 
   alert('Athlete Rejected: '+id);
+  }
+  function filterAdminAthletes(status){
+
+  const list = status === 'All'
+    ? athletes
+    : athletes.filter(a => (a.status || 'Pending') === status);
+
+  document.getElementById('adminAthletes').innerHTML =
+    list.length
+    ? `<table>
+        <thead>
+          <tr>
+            <th>Athlete ID</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${list.map(a => `
+            <tr>
+              <td>${esc(a.id)}</td>
+              <td>${esc(a.name)}</td>
+              <td><b>${esc(a.status || 'Pending')}</b></td>
+              <td>
+                <button onclick="approveAthlete('${esc(a.id)}')">Approve</button>
+                <button onclick="rejectAthlete('${esc(a.id)}')">Reject</button>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>`
+    : '<div class="notice">No athletes found.</div>';
   }
 function registerAthlete(){
 
