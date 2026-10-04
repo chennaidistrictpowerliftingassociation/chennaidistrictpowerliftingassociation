@@ -229,9 +229,23 @@ function render(){
  ).join('');
 
  document.getElementById('athleteTable').innerHTML=athletes.length?
- `<table><thead><tr><th>Athlete ID</th><th>Name</th><th>Discipline</th><th>Weight</th><th>Club</th></tr></thead>
- <tbody>${athletes.map(a=>`<tr><td>${esc(a.id)}</td><td>${esc(a.name)}</td><td>${esc(a.discipline)}</td><td>${esc(a.weight)}</td><td>${esc(a.club)}</td></tr>`).join('')}</tbody></table>`
- :'<div class="card">No athletes have been registered yet.</div>';
+`<table><thead><tr>
+<th>Athlete ID</th>
+<th>Name</th>
+<th>Discipline</th>
+<th>Weight</th>
+<th>Club</th>
+<th>Status</th>
+</tr></thead>
+<tbody>${athletes.map(a=>`<tr>
+<td>${esc(a.id)}</td>
+<td>${esc(a.name)}</td>
+<td>${esc(a.discipline)}</td>
+<td>${esc(a.weight||'-')}</td>
+<td>${esc(a.club||'-')}</td>
+<td><b>${esc(a.status||'Pending')}</b></td>
+</tr>`).join('')}</tbody></table>`
+:'<div class="card">No athletes have been registered yet.</div>';
 }
 
 function registerAthlete(){
