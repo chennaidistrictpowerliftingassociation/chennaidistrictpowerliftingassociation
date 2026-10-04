@@ -70,12 +70,70 @@ footer{background:#170000;color:#fff;padding:45px 0 20px}.foot{display:grid;grid
 
 <section id="registration"><div class="container"><div class="title"><h2>Online Athlete Registration</h2><p>Register with Chennai District Powerlifting Association</p></div>
 <form class="form" id="regForm"><div class="fields">
-<div class="field"><label>Athlete Name *</label><input id="rname" required></div><div class="field"><label>Date of Birth *</label><input id="rdob" type="date" required></div>
-<div class="field"><label>Gender *</label><select id="rgender" required><option value="">Select</option><option>Male</option><option>Female</option></select></div>
-<div class="field"><label>Mobile *</label><input id="rmobile" required></div><div class="field"><label>Email</label><input id="remail" type="email"></div>
-<div class="field"><label>Discipline *</label><select id="rdisc" required><option value="">Select</option><option>Equipped Powerlifting</option><option>Classic Powerlifting</option><option>Bench Press</option><option>Dead Lift</option></select></div>
-<div class="field"><label>Weight Category</label><input id="rweight" placeholder="e.g. 66 kg"></div><div class="field"><label>Club / Gym</label><input id="rclub"></div>
-<div class="field full"><label>Address</label><textarea id="raddress"></textarea></div><div class="field full"><label>Emergency Contact</label><input id="remergency"></div>
+<div class="field">
+<label>Athlete Name *</label>
+<input id="rname" required>
+</div>
+
+<div class="field">
+<label>Date of Birth *</label>
+<input id="rdob" type="date" required>
+</div>
+
+<div class="field">
+<label>Gender *</label>
+<select id="rgender" required>
+<option value="">Select</option>
+<option>Male</option>
+<option>Female</option>
+</select>
+</div>
+
+<div class="field">
+<label>Mobile *</label>
+<input id="rmobile" required>
+</div>
+
+<div class="field">
+<label>Aadhaar Number *</label>
+<input id="raadhaar" inputmode="numeric" maxlength="12" placeholder="Enter 12 digit Aadhaar" required>
+</div>
+
+<div class="field">
+<label>Email</label>
+<input id="remail" type="email">
+</div>
+
+<div class="field">
+<label>Discipline *</label>
+<select id="rdisc" required>
+<option value="">Select</option>
+<option>Equipped Powerlifting</option>
+<option>Classic Powerlifting</option>
+<option>Bench Press</option>
+<option>Dead Lift</option>
+</select>
+</div>
+
+<div class="field">
+<label>Weight Category</label>
+<input id="rweight" placeholder="e.g. 66 kg">
+</div>
+
+<div class="field">
+<label>Club / Gym</label>
+<input id="rclub">
+</div>
+
+<div class="field full">
+<label>Athlete Photo *</label>
+<input id="rphoto" type="file" accept="image/*" required>
+</div>
+
+<div class="field full">
+<label>Address</label>
+<textarea id="raddress"></textarea>
+</div>
 <div class="field full"><button class="btn dark" type="submit">Submit Registration & Generate Athlete ID</button><div id="regMsg"></div></div>
 </div></form></div></section>
 
@@ -116,19 +174,171 @@ document.getElementById('recordsBody').innerHTML=records.map(r=>`<tr><td>${esc(r
 document.getElementById('athleteTable').innerHTML=athletes.length?`<table><thead><tr><th>Athlete ID</th><th>Name</th><th>Discipline</th><th>Weight</th><th>Club</th></tr></thead><tbody>${athletes.map(a=>`<tr><td>${esc(a.id)}</td><td>${esc(a.name)}</td><td>${esc(a.disc)}</td><td>${esc(a.weight)}</td><td>${esc(a.club)}</td></tr>`).join('')}</tbody></table>`:'<div class="card">No athletes have been registered yet.</div>';
 }
 document.getElementById('regForm').addEventListener('submit',e=>{
-e.preventDefault();
-let id='CDPA-'+new Date().getFullYear()+'-'+String(athletes.length+1).padStart(4,'0');
-let a={id,name:rname.value,dob:rdob.value,gender:rgender.value,mobile:rmobile.value,email:remail.value,disc:rdisc.value,weight:rweight.value,club:rclub.value,address:raddress.value,emergency:remergency.value};
-athletes.push(a);localStorage.setItem(key,JSON.stringify(athletes));render();
-document.getElementById('regMsg').innerHTML=`<div class="success">Registration submitted successfully. Athlete ID: <b>${id}</b>. <button type="button" class="btn dark" onclick="printID('${id}')">Print Athlete ID</button></div>`;
-e.target.reset();location.hash='registration';
-});
-function printID(id){let a=athletes.find(x=>x.id===id);let w=window.open('','_blank','width=600,height=500');w.document.write(`<html><head><title>CDPA Athlete ID</title><style>body{font-family:Arial;text-align:center;padding:35px}.card{border:4px solid #690006;border-radius:18px;padding:25px}.logo{width:100px}.id{font-size:28px;font-weight:bold;color:#690006}</style></head><body><div class="card"><img class="logo" src="assets/cdpa-logo.jpg"><h2>CHENNAI DISTRICT POWERLIFTING ASSOCIATION</h2><h3>ATHLETE ID CARD</h3><p class="id">${a.id}</p><h2>${esc(a.name)}</h2><p>${esc(a.disc)} | ${esc(a.weight)}</p><p>${esc(a.club)}</p><p>Contact: 9840868935</p></div><script>window.print()<\/script></body></html>`);w.document.close()}
-function login(){if(document.getElementById('adminPass').value==='CDPA1975'){loginBox.classList.add('hidden');adminPanel.classList.remove('hidden')}else loginMsg.innerHTML='<p style="color:#f88">Incorrect password.</p>'}
-function logout(){adminPanel.classList.add('hidden');loginBox.classList.remove('hidden')}
-function addTournament(){let t={name:tName.value,date:tDate.value,venue:tVenue.value,status:tStatus.value};if(!t.name)return alert('Enter tournament name');tournaments.push(t);localStorage.setItem(tk,JSON.stringify(tournaments));render();tName.value=tVenue.value='';}
-function exportCSV(){let rows=[['Athlete ID','Name','DOB','Gender','Mobile','Email','Discipline','Weight','Club','Address','Emergency'],...athletes.map(a=>[a.id,a.name,a.dob,a.gender,a.mobile,a.email,a.disc,a.weight,a.club,a.address,a.emergency])];let csv=rows.map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(',')).join('\\n');let blob=new Blob([csv],{type:'text/csv'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='CDPA_Athletes.csv';a.click();URL.revokeObjectURL(u)}
-function clearAthletes(){if(confirm('Delete all locally stored athlete registrations?')){athletes=[];localStorage.removeItem(key);render()}}
-render();
-</script>
+;e.preventDefault();
+
+const aadhaar = document.getElementById('raadhaar').value.replace(/\D/g,'');
+
+if(aadhaar.length !== 12){
+  alert('Please enter a valid 12 digit Aadhaar Number.');
+  return;
+}
+
+const photoFile = document.getElementById('rphoto').files[0];
+if(!photoFile){
+  alert('Please select Athlete Photo.');
+  return;
+}
+
+const reader = new FileReader();
+
+reader.onload = function(){
+
+  const id='CDPA-'+new Date().getFullYear()+'-'+String(athletes.length+1).padStart(4,'0');
+
+  const a={
+    id:id,
+    name:document.getElementById('rname').value,
+    dob:document.getElementById('rdob').value,
+    gender:document.getElementById('rgender').value,
+    mobile:document.getElementById('rmobile').value,
+    email:document.getElementById('remail').value,
+    aadhaarLast4:aadhaar.slice(-4),
+    discipline:document.getElementById('rdisc').value,
+    weight:document.getElementById('rweight').value,
+    club:document.getElementById('rclub').value,
+    address:document.getElementById('raddress').value,
+    photo:reader.result
+  };
+
+  athletes.push(a);
+  localStorage.setItem(key,JSON.stringify(athletes));
+  render();
+
+  document.getElementById('regMsg').innerHTML=
+    '<div class="success">Registration submitted successfully. Athlete ID: '+id+'</div>';
+
+  document.getElementById('regForm').reset();
+  location.hash='registration';
+
+  printID(id);
+};
+function printID(id){
+
+  const a=athletes.find(x=>x.id===id);
+
+  const w=window.open('','_blank','width=600,height=750');
+
+  const logo=new URL('cdpa-logo.jpg',location.href).href;
+
+  w.document.write(`
+  <html>
+  <head>
+  <title>CDPA Athlete ID Card</title>
+
+  <style>
+  body{
+    font-family:Arial,sans-serif;
+    background:#f3f4f6;
+    padding:20px;
+    text-align:center;
+  }
+
+  .card{
+    width:360px;
+    margin:auto;
+    background:white;
+    border:3px solid #690006;
+    border-radius:15px;
+    padding:20px;
+  }
+
+  .logo{
+    width:80px;
+    height:80px;
+    object-fit:contain;
+  }
+
+  .photo{
+    width:110px;
+    height:130px;
+    object-fit:cover;
+    border:2px solid #690006;
+    border-radius:6px;
+    margin:10px;
+  }
+
+  h2{
+    color:#690006;
+    font-size:20px;
+  }
+
+  .id{
+    font-size:20px;
+    font-weight:bold;
+    color:#920d16;
+    margin:10px;
+  }
+
+  .info{
+    text-align:left;
+    line-height:1.7;
+  }
+
+  .footer{
+    margin-top:15px;
+    font-size:12px;
+  }
+
+  button{
+    padding:10px 18px;
+    margin-top:15px;
+  }
+  </style>
+
+  </head>
+
+  <body>
+
+  <div class="card">
+
+    <img src="${logo}" class="logo">
+
+    <h2>
+    CHENNAI DISTRICT<br>
+    POWERLIFTING ASSOCIATION
+    </h2>
+
+    <div>ATHLETE ID CARD</div>
+
+    <img src="${a.photo}" class="photo">
+
+    <div class="id">${a.id}</div>
+
+    <div class="info">
+      <b>Name:</b> ${a.name}<br>
+      <b>DOB:</b> ${a.dob}<br>
+      <b>Gender:</b> ${a.gender}<br>
+      <b>Discipline:</b> ${a.discipline}<br>
+      <b>Weight:</b> ${a.weight || '-'}<br>
+      <b>Club/Gym:</b> ${a.club || '-'}<br>
+      <b>Mobile:</b> ${a.mobile}<br>
+      <b>Aadhaar:</b> XXXX XXXX ${a.aadhaarLast4}
+    </div>
+
+    <div class="footer">
+      Chennai District Powerlifting Association<br>
+      Estd. 1975
+    </div>
+
+  </div>
+
+  <button onclick="window.print()">Print / Save PDF</button>
+
+  </body>
+  </html>
+  `);
+
+  w.document.close();
+ }
+reader.readAsDataURL(photoFile);
 </body></html>
