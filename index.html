@@ -310,18 +310,31 @@ function rejectAthlete(id){
           </tr>
         </thead>
         <tbody>
-          ${list.map(a => `
-            <tr>
-              <td>${esc(a.id)}</td>
-              <td>${esc(a.name)}</td>
-              <td><b>${esc(a.status || 'Pending')}</b></td>
-              <td>
-                <button onclick="approveAthlete('${esc(a.id)}')">Approve</button>
-                <button onclick="rejectAthlete('${esc(a.id)}')">Reject</button>
-              </td>
-            </tr>
-          `).join('')}
-        </tbody>
+${list.map(a=>`
+<tr>
+<td>${esc(a.id)}</td>
+<td>${esc(a.name)}</td>
+<td><b>${esc(a.status || 'Pending')}</b></td>
+<td>
+${
+a.status === 'Pending'
+?
+`
+<button onclick="approveAthlete('${esc(a.id)}')">Approve</button>
+<button onclick="rejectAthlete('${esc(a.id)}')">Reject</button>
+`
+:
+a.status === 'Rejected'
+?
+`<span style="color:#920d16"><b>Rejected</b><br>
+Reason: ${esc(a.rejectionReason || '-')}</span>`
+:
+`<span style="color:green"><b>Approved</b></span>`
+}
+</td>
+</tr>
+`).join('')}
+</tbody>
       </table>`
     : '<div class="notice">No athletes found.</div>';
   }
