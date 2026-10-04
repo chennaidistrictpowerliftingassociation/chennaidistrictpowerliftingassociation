@@ -244,9 +244,12 @@ function render(){
 <td>${esc(a.weight||'-')}</td>
 <td>${esc(a.club||'-')}</td>
 <td>
-<b>${esc(a.status||'Pending')}</b><br>
+<b>${esc(a.status||'Pending')}</b>
+${document.getElementById('adminPanel').classList.contains('hidden') ? '' : `
+<br>
 <button onclick="approveAthlete('${esc(a.id)}')">Approve</button>
 <button onclick="rejectAthlete('${esc(a.id)}')">Reject</button>
+`}
 </td>
 </tr>`).join('')}</tbody></table>`
 :'<div class="card">No athletes have been registered yet.</div>';
