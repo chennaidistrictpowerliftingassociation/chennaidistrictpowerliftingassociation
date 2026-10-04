@@ -234,7 +234,7 @@ function render(){
  :'<div class="card">No athletes have been registered yet.</div>';
 }
 
-document.getElementById('regForm').addEventListener('submit',function(e){
+document.getElementById('regForm').onsubmit=function(e){
 
   e.preventDefault();
   try{
