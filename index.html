@@ -232,12 +232,15 @@ document.getElementById('regForm').addEventListener('submit',function(e){
   return;
  }
 
- const photoFile=document.getElementById('rphoto').files[0];
- if(!photoFile){
+ const photoInput=document.getElementById('rphoto');
+const photoFile=photoInput.files && photoInput.files.length
+  ? photoInput.files[0]
+  : null;
+
+if(!photoFile){
   alert('Please select Athlete Photo.');
   return;
  }
-
  const reader=new FileReader();
 
  reader.onload=function(){
