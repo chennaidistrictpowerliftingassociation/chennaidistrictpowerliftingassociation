@@ -224,53 +224,75 @@ function render(){
 }
 
 document.getElementById('regForm').addEventListener('submit',function(e){
- e.preventDefault();
 
- const aadhaar=document.getElementById('raadhaar').value.replace(/\D/g,'');
- if(aadhaar.length!==12){
-  alert('Please enter a valid 12 digit Aadhaar Number.');
-  return;
- }
+  e.preventDefault();
+alert('Submit button is working');
+  try{
 
- const photoInput=document.getElementById('rphoto');
-const photoFile=photoInput.files && photoInput.files.length
-  ? photoInput.files[0]
-  : null;
+    const aadhaar=document.getElementById('raadhaar').value.replace(/\D/g,'');
 
-if(!photoFile){
-  alert('Please select Athlete Photo.');
-  return;
- }
- const reader=new FileReader();
+    if(aadhaar.length!==12){
+      alert('Please enter a valid 12 digit Aadhaar Number.');
+      return;
+    }
 
- reader.onload=function(){
-  const id='CDPA-'+new Date().getFullYear()+'-'+String(athletes.length+1).padStart(4,'0');
+    const photoInput=document.getElementById('rphoto');
+    const photoFile=photoInput.files && photoInput.files.length
+      ? photoInput.files[0]
+      : null;
 
-  const a={
-   id:id,
-   name:document.getElementById('rname').value.trim(),
-   dob:document.getElementById('rdob').value,
-   gender:document.getElementById('rgender').value,
-   mobile:document.getElementById('rmobile').value.trim(),
-   email:document.getElementById('remail').value.trim(),
-   aadhaarLast4:aadhaar.slice(-4),
-   discipline:document.getElementById('rdisc').value,
-   weight:document.getElementById('rweight').value.trim(),
-   club:document.getElementById('rclub').value.trim(),
-   address:document.getElementById('raddress').value.trim(),
-   photo:reader.result
-  };
+    if(!photoFile){
+      alert('Please select Athlete Photo.');
+      return;
+    }
 
-  athletes.push(a);
-  localStorage.setItem(key,JSON.stringify(athletes));
-  render();
+    const reader=new FileReader();
 
-  document.getElementById('regMsg').innerHTML='<div class="success">Registration submitted successfully. Athlete ID: '+id+'</div>';
-  document.getElementById('regForm').reset();
-  location.hash='registration';
+    reader.onload=function(){
 
-  printID(id);
- };
+      const id='CDPA-'+new Date().getFullYear()+'-'+
+        String(athletes.length+1).padStart(4,'0');
+
+      const a={
+        id:id,
+        name:document.getElementById('rname').value.trim(),
+        dob:document.getElementById('rdob').value,
+        gender:document.getElementById('rgender').value,
+        mobile:document.getElementById('rmobile').value.trim(),
+        email:document.getElementById('remail').value.trim(),
+        aadhaarLast4:aadhaar.slice(-4),
+        discipline:document.getElementById('rdisc').value,
+        weight:document.getElementById('rweight').value.trim(),
+        club:document.getElementById('rclub').value.trim(),
+        address:document.getElementById('raddress').value.trim(),
+        photo:reader.result
+      };
+
+      athletes.push(a);
+
+      localStorage.setItem(key,JSON.stringify(athletes));
+
+      render();
+
+      document.getElementById('regMsg').innerHTML=
+        '<div class="success">Registration submitted successfully. Athlete ID: '+id+'</div>';
+
+      document.getElementById('regForm').reset();
+
+      location.hash='registration';
+
+      printID(id);
+    };
+
+    reader.readAsDataURL(photoFile);
+
+  }catch(error){
+
+    alert('Registration error: '+error.message);
+
+  }
+
+});
 
  reader.readAsDataURL(photoFile);
 });
