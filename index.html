@@ -263,7 +263,10 @@ function registerAthlete(){
         String(athletes.length+1).padStart(4,'0');
 
       const a={
-        id:id,
+  id:id,
+  status:'Pending',
+  rejectionReason:'',
+  name:document.getElementById('rname').value.trim(),
         name:document.getElementById('rname').value.trim(),
         dob:document.getElementById('rdob').value,
         gender:document.getElementById('rgender').value,
