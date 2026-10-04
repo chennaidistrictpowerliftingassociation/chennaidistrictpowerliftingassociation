@@ -302,22 +302,6 @@ function registerAthlete(){
   }
   }
 
-      printID(id);
-    };
-
-    reader.readAsDataURL(photoFile);
-
-  }catch(error){
-
-    alert('Registration error: '+error.message);
-
-  }
-
-});
-
- reader.readAsDataURL(photoFile);
-});
-
 function printID(id){
  const a=athletes.find(x=>x.id===id);
  if(!a)return;
