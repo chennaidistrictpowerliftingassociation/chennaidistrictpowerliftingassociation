@@ -370,7 +370,7 @@ function registerAthlete(){
 
     const reader=new FileReader();
 
-    reader.onload=function(){
+    reader.onload=async function(){
 
       const id='CDPA-'+new Date().getFullYear()+'-'+
         String(athletes.length+1).padStart(4,'0');
@@ -392,20 +392,26 @@ function registerAthlete(){
         photo:reader.result
       };
 
-      athletes.push(a);
+      const {error}=await sb.from('athletes').insert([a]);
 
-      localStorage.setItem(key,JSON.stringify(athletes));
+if(error){
+  alert('Registration failed: '+error.message);
+  return;
+}
 
-      render();
+athletes.push(a);
+localStorage.setItem(key,JSON.stringify(athletes));
 
-      document.getElementById('regMsg').innerHTML=
-        '<div class="success">Registration submitted successfully. Athlete ID: '+id+'</div>';
+render();
 
-      document.getElementById('regForm').reset();
+document.getElementById('regMsg').innerHTML=
+'<div class="success">Registration submitted successfully. Athlete ID: '+id+'</div>';
 
-      location.hash='registration';
+document.getElementById('regForm').reset();
 
-      printID(id);
+location.hash='registration';
+
+printID(id);
     };
 
     reader.readAsDataURL(photoFile);
