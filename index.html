@@ -392,12 +392,21 @@ function registerAthlete(){
         photo:reader.result
       };
 
-      const {error}=await sb.from('athletes').insert([a]);
+      try{
+  if(!sb){
+    throw new Error('Supabase connection not initialized.');
+  }
 
-if(error){
+  const {error}=await sb.from('athletes').insert([a]);
+
+  if(error){
+    throw error;
+  }
+
+}catch(error){
   alert('Registration failed: '+error.message);
   return;
-}
+    }
 
 athletes.push(a);
 localStorage.setItem(key,JSON.stringify(athletes));
