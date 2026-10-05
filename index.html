@@ -187,7 +187,14 @@ footer{background:#170000;color:#fff;padding:45px 0 20px}.foot{display:grid;grid
   <script>
   const SUPABASE_URL='https://ettllnapnddpvaluhwoc.supabase.co';
 const SUPABASE_KEY='sb_publishable_0VrlEbmQT79bs1ot3T4tgg_ONkzMYdS';
-const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+    let sb=null;
+try{
+  if(window.supabase){
+    sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+  }
+}catch(e){
+  console.error(e);
+    }
 const key='cdpaAthletesV1', tk='cdpaTournamentsV1';
 let athletes=[];
 let tournaments=[];
