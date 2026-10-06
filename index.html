@@ -231,7 +231,7 @@ function esc(s){
  return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 }
 
-function render(){
+window.render=function(){
  document.getElementById('year').textContent=new Date().getFullYear();
 
  document.getElementById('tournamentList').innerHTML=tournaments.map(t=>
