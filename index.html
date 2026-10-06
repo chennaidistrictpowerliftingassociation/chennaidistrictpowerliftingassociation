@@ -287,7 +287,7 @@ function approveAthlete(id){
   if(!a)return;
 
   a.status='Approved';
-  a.rejectionReason='';
+  a.rejection_reason='';
 
   localStorage.setItem(key,JSON.stringify(athletes));
   render();
@@ -304,7 +304,7 @@ function rejectAthlete(id){
   if(!a)return;
 
   a.status='Rejected';
-  a.rejectionReason=reason.trim();
+  a.rejection_reason=reason.trim();
 
   localStorage.setItem(key,JSON.stringify(athletes));
   render();
@@ -346,7 +346,7 @@ a.status === 'Pending'
 a.status === 'Rejected'
 ?
 `<span style="color:#920d16"><b>Rejected</b><br>
-Reason: ${esc(a.rejectionReason || '-')}</span>`
+Reason: ${esc(a rejection_reason || '-')}</span>`
 :
 `<span style="color:green"><b>Approved</b></span>`
 }
@@ -389,7 +389,7 @@ function registerAthlete(){
       const a={
   id:id,
   status:'Pending',
-  rejectionReason:'',
+  rejection_reason:'',
   name:document.getElementById('rname').value.trim(),
         dob:document.getElementById('rdob').value,
         gender:document.getElementById('rgender').value,
