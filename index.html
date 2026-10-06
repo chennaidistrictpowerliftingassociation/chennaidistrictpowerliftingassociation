@@ -296,9 +296,10 @@ async function approveAthlete(id){
       .eq('id',id);
 
     if(error){
-      throw error;
+  alert('Supabase UPDATE ERROR: '+error.message);
+  return;
     }
-
+    
     a.status='Approved';
     a.rejection_reason='';
 
