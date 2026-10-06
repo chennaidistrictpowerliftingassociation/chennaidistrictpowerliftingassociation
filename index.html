@@ -282,17 +282,35 @@ ${approvedAthletes.map(a=>`
 :'<div class="card">No approved athletes yet.</div>';
     }
 
-function approveAthlete(id){
+async function approveAthlete(id){
   const a=athletes.find(x=>x.id===id);
   if(!a)return;
 
-  a.status='Approved';
-  a.rejection_reason='';
+  try{
+    const {error}=await sb
+      .from('athletes')
+      .update({
+        status:'Approved',
+        rejection_reason:''
+      })
+      .eq('id',id);
 
-  localStorage.setItem(key,JSON.stringify(athletes));
-  render();
+    if(error){
+      throw error;
+    }
 
-  alert('Athlete Approved: '+id);
+    a.status='Approved';
+    a.rejection_reason='';
+
+    localStorage.setItem(key,JSON.stringify(athletes));
+    render();
+    filterAdminAthletes('All');
+
+    alert('Athlete Approved: '+id);
+
+  }catch(error){
+    alert('Approval failed: '+error.message);
+  }
 }
 
 function rejectAthlete(id){
