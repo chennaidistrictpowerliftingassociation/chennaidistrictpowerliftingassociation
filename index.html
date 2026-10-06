@@ -229,8 +229,14 @@ let records=[
 ];
 
 function esc(s){
- return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-}
+  return String(s ?? '').replace(/[&<>"']/g, function(m){
+    if(m === '&') return '&amp;';
+    if(m === '<') return '&lt;';
+    if(m === '>') return '&gt;';
+    if(m === '"') return '&quot;';
+    return '&#039;';
+  });
+  }
 
 window.render=function(){alert('RENDER REACHED');
  document.getElementById('year').textContent=new Date().getFullYear();
