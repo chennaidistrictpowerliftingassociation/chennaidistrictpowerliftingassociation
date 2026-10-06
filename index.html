@@ -279,7 +279,8 @@ ${approvedAthletes.map(a=>`
 `).join('')}
 </tbody></table>`
 :'<div class="card">No approved athletes yet.</div>';
-  
+    }
+
 function approveAthlete(id){
   const a=athletes.find(x=>x.id===id);
   if(!a)return;
