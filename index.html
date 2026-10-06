@@ -494,7 +494,7 @@ button{padding:10px 18px;margin-top:15px}
  <b>Weight:</b> ${esc(a.weight||'-')}<br>
  <b>Club/Gym:</b> ${esc(a.club||'-')}<br>
  <b>Mobile:</b> ${esc(a.mobile)}<br>
- <b>Aadhaar:</b> XXXX XXXX ${esc(a.aadhaarLast4)}
+ <b>Aadhaar:</b> XXXX XXXX ${esc(a.aadhaar_last4)}
  </div>
  <div class="signatory">
   <b>Authorised Signatory</b><br>
@@ -551,7 +551,7 @@ function addTournament(){
 function exportCSV(){
  if(!athletes.length){alert('No athlete data to export.');return;}
  const rows=[['Athlete ID','Name','DOB','Gender','Mobile','Email','Aadhaar Last 4','Discipline','Weight','Club','Address']];
- athletes.forEach(a=>rows.push([a.id,a.name,a.dob,a.gender,a.mobile,a.email,a.aadhaarLast4,a.discipline,a.weight,a.club,a.address]));
+ athletes.forEach(a=>rows.push([a.id,a.name,a.dob,a.gender,a.mobile,a.email,a.aadhaar_last4,a.discipline,a.weight,a.club,a.address]));
  const csv=rows.map(row=>row.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');
  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
  const url=URL.createObjectURL(blob);
