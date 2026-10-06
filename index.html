@@ -255,7 +255,7 @@ window.render=function(){alert('RENDER REACHED');
  ).join('');
 
  const approvedAthletes=athletes.filter(a=>
-  (a.status||'Pending')==='Approved'
+  String(a.status||'Pending').trim().toLowerCase()==='approved'
 );
 
 document.getElementById('athleteTable').innerHTML=
