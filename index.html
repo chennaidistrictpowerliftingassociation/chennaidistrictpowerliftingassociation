@@ -507,6 +507,48 @@ async function rejectAthlete(id){
     alert('Rejection failed: '+error.message);
   }
 }
+    async function approveInstitution(id){
+  try{
+    const {error}=await sb
+      .from('institutions')
+      .update({
+        status:'Approved',
+        rejection_reason:''
+      })
+      .eq('registration_no',id);
+
+    if(error) throw error;
+
+    alert('Institution Approved: ' + id);
+    filterAdminInstitutions('All');
+
+  }catch(error){
+    alert('Institution approval failed: ' + JSON.stringify(error));
+  }
+}
+
+async function rejectInstitution(id){
+  const reason=prompt('Enter rejection reason:');
+  if(reason===null) return;
+
+  try{
+    const {error}=await sb
+      .from('institutions')
+      .update({
+        status:'Rejected',
+        rejection_reason:reason.trim()
+      })
+      .eq('registration_no',id);
+
+    if(error) throw error;
+
+    alert('Institution Rejected: ' + id);
+    filterAdminInstitutions('All');
+
+  }catch(error){
+    alert('Institution rejection failed: ' + JSON.stringify(error));
+  }
+}
   async function filterAdminAthletes(status){
 
   try{
