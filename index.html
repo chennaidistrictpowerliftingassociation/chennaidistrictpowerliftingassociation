@@ -322,7 +322,7 @@ async function rejectAthlete(id){
   if(!a)return;
 
   try{
-    const {error}=await sb
+    const {data,error}=await sb
       .from('athletes')
       .update({
         status:'Rejected',
