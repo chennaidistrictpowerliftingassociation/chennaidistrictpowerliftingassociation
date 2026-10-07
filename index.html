@@ -899,8 +899,7 @@ async function registerInstitution(){
         rejection_reason: '',
         registered_date: registeredDate.toISOString().slice(0,10),
         expiry_date: expiryDate.toISOString().slice(0,10)
-      }])
-      .select();
+      }]);
 
     if(error) throw error;
 
