@@ -913,7 +913,7 @@ async function registerInstitution(){
     alert('Institution Registration Submitted: ' + registrationNo);
 
   }catch(error){
-    alert('Institution registration failed: ' + error.message);
+    alert('Institution registration failed: ' + JSON.stringify(error));
   }
     }
 render();
