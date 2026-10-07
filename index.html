@@ -165,7 +165,32 @@ official circular.
 <form class="form" id="regForm" onsubmit="alert('DIRECT FORM WORKING'); return false;">
 <div class="fields">
 
-<div class="field"><label>Athlete Name *</label><input id="rname" required></div>
+<div class="field">
+<label>Competition Year *</label>
+<select id="competitionYear" required>
+<option value="">Select Year</option>
+<option value="2026">2026</option>
+<option value="2027">2027</option>
+<option value="2028">2028</option>
+<option value="2029">2029</option>
+<option value="2030">2030</option>
+</select>
+</div>
+
+<div class="field">
+<label>Age Category *</label>
+<select id="ageCategory" required>
+<option value="">Select Age Category</option>
+<option>Sub Junior</option>
+<option>Junior</option>
+<option>Senior</option>
+<option>Masters-1</option>
+<option>Masters-2</option>
+<option>Masters-3</option>
+<option>Masters-4</option>
+</select>
+</div>
+  <div class="field"><label>Athlete Name *</label><input id="rname" required></div>
 <div class="field"><label>Date of Birth *</label><input id="rdob" type="date" required></div>
 
 <div class="field"><label>Gender *</label>
@@ -197,7 +222,79 @@ official circular.
 
 </div></form></div></section>
 
-<section id="admin" class="cream"><div class="container">
+<section id="institution" class="cream">
+<div class="container">
+
+<div class="title">
+<h2>Gym / Fitness Institution / Sports Academy Registration</h2>
+<p>Register your institution with Chennai District Powerlifting Association</p>
+</div>
+
+<form class="form" id="institutionForm">
+
+<div class="field">
+<label>Registration Type *</label>
+<select id="institutionType" required>
+<option value="">Select Type</option>
+<option>Gym</option>
+<option>Fitness Institution</option>
+<option>Sports Academy</option>
+</select>
+</div>
+
+<div class="field">
+<label>Institution / Gym Name *</label>
+<input id="institutionName" required>
+</div>
+
+<div class="field">
+<label>Owner / Authorized Person Name *</label>
+<input id="institutionOwner" required>
+</div>
+
+<div class="field">
+<label>Mobile Number *</label>
+<input id="institutionMobile" required>
+</div>
+
+<div class="field">
+<label>Email</label>
+<input id="institutionEmail" type="email">
+</div>
+
+<div class="field">
+<label>Address</label>
+<textarea id="institutionAddress"></textarea>
+</div>
+
+<div class="field">
+<label>District / Area</label>
+<input id="institutionDistrict">
+</div>
+
+<div class="field">
+<label>ID Proof – Last 4 Digits</label>
+<input id="institutionIdProof" maxlength="4" inputmode="numeric">
+</div>
+
+<div class="field full">
+<label>Institution Photo / Logo</label>
+<input id="institutionPhoto" type="file" accept="image/*">
+</div>
+
+<div class="field full">
+<button class="btn dark" type="button" onclick="registerInstitution()">
+Register Institution
+</button>
+</div>
+
+<div id="institutionMsg"></div>
+
+</form>
+
+</div>
+</section>
+  <section id="admin" class="cream"><div class="container">
 <div class="title"><h2>Association Admin</h2><p>Manage local demo data</p></div>
 <div id="loginBox" class="adminbox">
 <h3>Admin Login</h3>
@@ -475,6 +572,47 @@ function registerAthlete(){
   try{
 
     const aadhaar=document.getElementById('raadhaar').value.replace(/\D/g,'');
+    const competitionYear = Number(document.getElementById('competitionYear').value);
+const dob = document.getElementById('rdob').value;
+const selectedAgeCategory = document.getElementById('ageCategory').value;
+
+if(!competitionYear || !dob || !selectedAgeCategory){
+  alert('Please select Competition Year, Date of Birth and Age Category.');
+  return;
+}
+
+const birthYear = new Date(dob).getFullYear();
+
+const yearOffset = competitionYear - 2026;
+
+const ranges = {
+  'Sub Junior': [2008 + yearOffset, 2014 + yearOffset],
+  'Junior': [2003 + yearOffset, 2007 + yearOffset],
+  'Masters-1': [1977 + yearOffset, 1986 + yearOffset],
+  'Masters-2': [1967 + yearOffset, 1976 + yearOffset],
+  'Masters-3': [1957 + yearOffset, 1966 + yearOffset]
+};
+
+let validCategory = false;
+
+if(selectedAgeCategory === 'Senior'){
+  validCategory = true;
+}
+else if(selectedAgeCategory === 'Masters-4'){
+  validCategory = birthYear < (1956 + yearOffset);
+}
+else if(ranges[selectedAgeCategory]){
+  const [minYear,maxYear] = ranges[selectedAgeCategory];
+  validCategory = birthYear >= minYear && birthYear <= maxYear;
+}
+
+if(!validCategory){
+  alert(
+    'Age Category does not match the Date of Birth for Competition Year ' +
+    competitionYear + '.'
+  );
+  return;
+}
 
     if(aadhaar.length!==12){
       alert('Please enter a valid 12 digit Aadhaar Number.');
