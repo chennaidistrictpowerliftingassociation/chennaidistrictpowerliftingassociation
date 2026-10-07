@@ -330,52 +330,75 @@ function rejectAthlete(id){
 
   alert('Athlete Rejected: '+id);
   }
-  function filterAdminAthletes(status){
+  async function filterAdminAthletes(status){
 
-  const list = status === 'All'
-    ? athletes
-    : athletes.filter(a => (a.status || 'Pending') === status);
+  try{
 
-  document.getElementById('adminAthletes').innerHTML =
-    list.length
-    ? `<table>
-        <thead>
-          <tr>
-            <th>Athlete ID</th>
-            <th>Name</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-${list.map(a=>`
-<tr>
-<td>${esc(a.id)}</td>
-<td>${esc(a.name)}</td>
-<td><b>${esc(a.status || 'Pending')}</b></td>
-<td>
-${
-a.status === 'Pending'
-?
-`
-<button onclick="approveAthlete('${esc(a.id)}')">Approve</button>
-<button onclick="rejectAthlete('${esc(a.id)}')">Reject</button>
-`
-:
-a.status === 'Rejected'
-?
-`<span style="color:#920d16"><b>Rejected</b><br>
-Reason: ${esc(a.rejection_reason || '-')}</span>`
-:
-`<span style="color:green"><b>Approved</b></span>`
-}
-</td>
-</tr>
-`).join('')}
-</tbody>
-      </table>`
-    : '<div class="notice">No athletes found.</div>';
+    if(!sb){
+      throw new Error('Supabase connection not initialized.');
+    }
+
+    const {data,error}=await sb
+      .from('athletes')
+      .select('*')
+      .order('id',{ascending:true});
+
+    if(error){
+      throw error;
+    }
+
+    athletes=data || [];
+
+    const list = status === 'All'
+      ? athletes
+      : athletes.filter(a =>
+          (a.status || 'Pending') === status
+        );
+
+    document.getElementById('adminAthletes').innerHTML =
+      list.length
+      ? `<table>
+          <thead>
+            <tr>
+              <th>Athlete ID</th>
+              <th>Name</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${list.map(a => `
+              <tr>
+                <td>${esc(a.id)}</td>
+                <td>${esc(a.name)}</td>
+                <td><b>${esc(a.status || 'Pending')}</b></td>
+                <td>
+                  ${
+                    a.status === 'Pending'
+                    ? `
+                      <button onclick="approveAthlete('${esc(a.id)}')">Approve</button>
+                      <button onclick="rejectAthlete('${esc(a.id)}')">Reject</button>
+                    `
+                    : a.status === 'Rejected'
+                    ? `<span style="color:#920d16"><b>Rejected</b></span><br>
+                       Reason: ${esc(a.rejection_reason || '-')}
+                      `
+                    : `<span style="color:green"><b>Approved</b></span>`
+                  }
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>`
+      : '<div class="notice">No athletes found.</div>';
+
+  }catch(error){
+
+    alert('Loading athletes failed: '+error.message);
+
   }
+
+    }
 function registerAthlete(){
   alert('REGISTER FUNCTION STARTED');
 
