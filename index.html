@@ -401,6 +401,7 @@ function registerAthlete(){
     const reader=new FileReader();
 
     reader.onload=async function(){
+      alert('PHOTO READER STARTED');
 
       const id='CDPA-'+new Date().getFullYear()+'-'+
         String(athletes.length+1).padStart(4,'0');
