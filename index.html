@@ -507,6 +507,65 @@ async function rejectAthlete(id){
     alert('Rejection failed: '+error.message);
   }
 }
+   async function filterAdminInstitutions(status){
+  try{
+    if(!sb){
+      throw new Error('Supabase connection not initialized.');
+    }
+
+    const {data,error}=await sb
+      .from('institutions')
+      .select('*')
+      .order('id',{ascending:true});
+
+    if(error) throw error;
+
+    const list = status === 'All'
+      ? (data || [])
+      : (data || []).filter(x => (x.status || 'Pending') === status);
+
+    document.getElementById('adminInstitutions').innerHTML =
+      list.length
+      ? `<table>
+          <thead>
+            <tr>
+              <th>Registration No</th>
+              <th>Institution</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${list.map(x => `
+              <tr>
+                <td>${esc(x.registration_no || '')}</td>
+                <td>${esc(x.institution_name || '')}</td>
+                <td>${esc(x.registration_type || '')}</td>
+                <td><b>${esc(x.status || 'Pending')}</b></td>
+                <td>
+                  ${
+                    x.status === 'Pending'
+                    ? `
+                      <button onclick="approveInstitution('${esc(x.registration_no)}')">Approve</button>
+                      <button onclick="rejectInstitution('${esc(x.registration_no)}')">Reject</button>
+                    `
+                    : x.status === 'Rejected'
+                    ? `<span style="color:#920d16"><b>Rejected</b></span><br>
+                       Reason: ${esc(x.rejection_reason || '-')}`
+                    : `<span style="color:green"><b>Approved</b></span>`
+                  }
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>`
+      : '<div class="notice">No institutions found.</div>';
+
+  }catch(error){
+    alert('Loading institutions failed: '+error.message);
+  }
+   }
     async function approveInstitution(id){
   try{
     const {error}=await sb
