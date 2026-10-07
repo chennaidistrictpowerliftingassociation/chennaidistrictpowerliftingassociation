@@ -314,22 +314,40 @@ async function approveAthlete(id){
   }
 }
 
-function rejectAthlete(id){
+async function rejectAthlete(id){
   const reason=prompt('Enter rejection reason:');
-
   if(reason===null)return;
 
   const a=athletes.find(x=>x.id===id);
   if(!a)return;
 
-  a.status='Rejected';
-  a.rejection_reason=reason.trim();
+  try{
+    const {error}=await sb
+      .from('athletes')
+      .update({
+        status:'Rejected',
+        rejection_reason:reason.trim()
+      })
+      .eq('id',id);
 
-  localStorage.setItem(key,JSON.stringify(athletes));
-  render();
+    if(error){
+      throw error;
+    }
 
-  alert('Athlete Rejected: '+id);
+    a.status='Rejected';
+    a.rejection_reason=reason.trim();
+
+    localStorage.setItem(key,JSON.stringify(athletes));
+
+    render();
+    filterAdminAthletes('All');
+
+    alert('Athlete Rejected: '+id);
+
+  }catch(error){
+    alert('Rejection failed: '+error.message);
   }
+}
   async function filterAdminAthletes(status){
 
   try{
