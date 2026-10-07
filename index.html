@@ -819,7 +819,103 @@ function clearAthletes(){
   render();
  }
 }
+async function registerInstitution(){
+  try{
+    if(!sb){
+      throw new Error('Supabase connection not initialized.');
+    }
 
+    const type = document.getElementById('institutionType').value;
+    const name = document.getElementById('institutionName').value.trim();
+    const owner = document.getElementById('institutionOwner').value.trim();
+    const mobile = document.getElementById('institutionMobile').value.trim();
+    const email = document.getElementById('institutionEmail').value.trim();
+    const address = document.getElementById('institutionAddress').value.trim();
+    const district = document.getElementById('institutionDistrict').value.trim();
+    const idProof = document.getElementById('institutionIdProof').value.trim();
+
+    if(!type || !name || !owner || !mobile){
+      alert('Please fill all required fields.');
+      return;
+    }
+
+    const photoInput = document.getElementById('institutionPhoto');
+    const photoFile = photoInput.files && photoInput.files.length
+      ? photoInput.files[0]
+      : null;
+
+    let photo = '';
+
+    if(photoFile){
+      photo = await new Promise((resolve,reject)=>{
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(photoFile);
+      });
+    }
+
+    const year = new Date().getFullYear();
+
+    const {data:lastRows,error:lastError} = await sb
+      .from('institutions')
+      .select('registration_no')
+      .order('id',{ascending:false})
+      .limit(1);
+
+    if(lastError) throw lastError;
+
+    let nextNumber = 1;
+
+    if(lastRows && lastRows.length && lastRows[0].registration_no){
+      const match = lastRows[0].registration_no.match(/(\d+)$/);
+      if(match){
+        nextNumber = Number(match[1]) + 1;
+      }
+    }
+
+    const registrationNo =
+      'CDPA-INST-' + year + '-' +
+      String(nextNumber).padStart(4,'0');
+
+    const registeredDate = new Date();
+    const expiryDate = new Date();
+    expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+
+    const {data,error} = await sb
+      .from('institutions')
+      .insert([{
+        registration_no: registrationNo,
+        institution_name: name,
+        registration_type: type,
+        owner_name: owner,
+        mobile: mobile,
+        email: email,
+        address: address,
+        district: district,
+        id_proof_last4: idProof.slice(-4),
+        photo: photo,
+        status: 'Pending',
+        rejection_reason: '',
+        registered_date: registeredDate.toISOString().slice(0,10),
+        expiry_date: expiryDate.toISOString().slice(0,10)
+      }])
+      .select();
+
+    if(error) throw error;
+
+    document.getElementById('institutionMsg').innerHTML =
+      '<div class="success">Institution registration submitted successfully.<br>Registration No: <b>' +
+      registrationNo + '</b><br>Status: <b>Pending</b></div>';
+
+    document.getElementById('institutionForm').reset();
+
+    alert('Institution Registration Submitted: ' + registrationNo);
+
+  }catch(error){
+    alert('Institution registration failed: ' + error.message);
+  }
+    }
 render();
 </script>
 </body>
