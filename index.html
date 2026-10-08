@@ -383,6 +383,61 @@ Register Institution
   const SUPABASE_URL='https://ettllnapnddpvaluhwoc.supabase.co';
 const SUPABASE_KEY='sb_publishable_0VrlEbmQT79bs1ot3T4tgg_ONkzMYdS';
     let sb=null;
+    window.addEventListener('DOMContentLoaded', async function(){
+
+  const params = new URLSearchParams(window.location.search);
+  const verifyId = params.get('verify');
+
+  if(!verifyId || !sb) return;
+
+  const {data,error} = await sb
+    .from('athletes')
+    .select('id,name,status,discipline,weight,club')
+    .eq('id',verifyId)
+    .single();
+
+  if(error || !data){
+    alert('Athlete verification failed.');
+    return;
+  }
+
+  const box = document.createElement('div');
+
+  box.style.cssText =
+    'position:fixed;inset:0;background:#fffdf5;z-index:99999;' +
+    'padding:30px 20px;font-family:Arial,sans-serif;overflow:auto;';
+
+  box.innerHTML = `
+    <div style="max-width:500px;margin:30px auto;border:2px solid #690006;
+                border-radius:12px;padding:25px;background:white;">
+      <h2 style="color:#690006;text-align:center;">
+        CDPA ATHLETE VERIFICATION
+      </h2>
+
+      <p><b>Athlete ID:</b> ${data.id}</p>
+      <p><b>Name:</b> ${data.name || '-'}</p>
+      <p><b>Status:</b> <span style="color:green"><b>${data.status || '-'}</b></span></p>
+      <p><b>Discipline:</b> ${data.discipline || '-'}</p>
+      <p><b>Weight Category:</b> ${data.weight || '-'}</p>
+      <p><b>Club / Gym:</b> ${data.club || '-'}</p>
+
+      <hr>
+
+      <p style="text-align:center;color:green;font-weight:bold;">
+        ✓ ATHLETE RECORD VERIFIED
+      </p>
+
+      <button onclick="history.back()"
+        style="background:#690006;color:white;border:0;
+        padding:12px 25px;border-radius:6px;">
+        Back to Website
+      </button>
+    </div>
+  `;
+
+  document.body.appendChild(box);
+
+});
 try{
   if(window.supabase){
     sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
