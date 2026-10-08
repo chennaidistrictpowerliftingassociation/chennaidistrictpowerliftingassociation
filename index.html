@@ -1150,7 +1150,6 @@ if(!validCategory){
   alert('Registration failed: '+error.message);
   return;
     }
-      reader.readAsDataURL(photoFile);
 athletes.push(a);
 localStorage.setItem(key,JSON.stringify(athletes));
 
@@ -1165,7 +1164,7 @@ location.hash='registration';
 
 printID(id);
     };
-    
+    reader.readAsDataURL(photoFile);
 
   }catch(error){
 
