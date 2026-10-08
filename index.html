@@ -509,6 +509,7 @@ async function rejectAthlete(id){
 }
    async function filterAdminInstitutions(status){
   try{
+
     if(!sb){
       throw new Error('Supabase connection not initialized.');
     }
@@ -518,15 +519,22 @@ async function rejectAthlete(id){
       .select('*')
       .order('id',{ascending:true});
 
-    if(error) throw error;
+    if(error){
+      throw error;
+    }
+
+    const institutions=data || [];
 
     const list = status === 'All'
-      ? (data || [])
-      : (data || []).filter(x => (x.status || 'Pending') === status);
+      ? institutions
+      : institutions.filter(function(x){
+          return String(x.status || 'Pending').trim() === status;
+        });
 
     document.getElementById('adminInstitutions').innerHTML =
       list.length
-      ? `<table>
+      ? `
+        <table>
           <thead>
             <tr>
               <th>Registration No</th>
@@ -536,36 +544,69 @@ async function rejectAthlete(id){
               <th>Action</th>
             </tr>
           </thead>
+
           <tbody>
-            ${list.map(x => `
-              <tr>
-                <td>${esc(x.registration_no || '')}</td>
-                <td>${esc(x.institution_name || '')}</td>
-                <td>${esc(x.registration_type || '')}</td>
-                <td><b>${esc(x.status || 'Pending')}</b></td>
-                <td>
-                  ${
-                    x.status === 'Pending'
-                    ? `
-                      <button onclick="approveInstitution('${esc(x.registration_no)}')">Approve</button>
-                      <button onclick="rejectInstitution('${esc(x.registration_no)}')">Reject</button>
-                    `
-                    : x.status === 'Rejected'
-                    ? `<span style="color:#920d16"><b>Rejected</b></span><br>
-                       Reason: ${esc(x.rejection_reason || '-')}`
-                    : `<span style="color:green"><b>Approved</b></span>`
-                  }
-                </td>
-              </tr>
-            `).join('')}
+            ${list.map(function(x){
+
+              const regNo = esc(x.registration_no || '');
+              const name = esc(x.institution_name || '');
+              const type = esc(x.registration_type || '');
+              const currentStatus = String(x.status || 'Pending').trim();
+
+              let action = '';
+
+              if(currentStatus === 'Pending'){
+                action = `
+                  <button onclick="approveInstitution('${regNo}')">
+                    Approve
+                  </button>
+                  <button onclick="rejectInstitution('${regNo}')">
+                    Reject
+                  </button>
+                `;
+              }
+              else if(currentStatus === 'Rejected'){
+                action = `
+                  <span style="color:#920d16">
+                    <b>Rejected</b>
+                  </span>
+                  <br>
+                  Reason: ${esc(x.rejection_reason || '-')}
+                `;
+              }
+              else if(currentStatus === 'Approved'){
+                action = `
+                  <span style="color:green">
+                    <b>Approved</b>
+                  </span>
+                `;
+              }
+
+              return `
+                <tr>
+                  <td>${regNo}</td>
+                  <td>${name}</td>
+                  <td>${type}</td>
+                  <td><b>${esc(currentStatus)}</b></td>
+                  <td>${action}</td>
+                </tr>
+              `;
+
+            }).join('')}
           </tbody>
-        </table>`
+        </table>
+      `
       : '<div class="notice">No institutions found.</div>';
 
   }catch(error){
-    alert('Loading institutions failed: '+error.message);
+
+    alert(
+      'Loading institutions failed: ' +
+      (error.message || JSON.stringify(error))
+    );
+
   }
-   }
+}
     async function approveInstitution(id){
   try{
     const {error}=await sb
