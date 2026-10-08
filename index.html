@@ -760,6 +760,12 @@ async function rejectInstitution(id){
   }
 
   const logo = new URL('cdpa-logo.jpg', location.href).href;
+      const verifyUrl =
+  location.origin + '/?institution_verify=' + encodeURIComponent(institution.registration_no);
+
+const qrUrl =
+  'https://api.qrserver.com/v1/create-qr-code/?size=105x105&data=' +
+  encodeURIComponent(verifyUrl);
 
   w.document.write(`
     <html>
@@ -877,6 +883,12 @@ async function rejectInstitution(id){
 
         </div>
 
+        <div style="text-align:center; margin-top:20px;">
+  <img src="${qrUrl}" width="105" height="105" alt="Institution QR Code">
+  <div style="font-size:11px; margin-top:5px;">
+    Scan to verify institution
+  </div>
+</div>
         <div style="display:flex; justify-content:flex-end; margin-top:35px;">
 
   <div style="text-align:right; line-height:1.35;">
