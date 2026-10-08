@@ -1139,7 +1139,8 @@ if(!validCategory){
     throw new Error('Supabase connection not initialized.');
   }
 
-  const {error}=await sb.from('athletes').insert([a]);
+  alert('DATABASE INSERT STARTED');
+        const {error}=await sb.from('athletes').insert([a]);
 
   if(error){
     throw error;
