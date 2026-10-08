@@ -209,7 +209,14 @@ official circular.
 <select id="rdisc" required><option value="">Select</option><option>Equipped Powerlifting</option><option>Classic Powerlifting</option><option>Bench Press</option><option>Dead Lift</option></select>
 </div>
 
-<div class="field"><label>Weight Category</label><input id="rweight" placeholder="e.g. 66 kg"></div>
+<div class="field">
+<label>Weight Category *</label>
+
+<select id="weight" required>
+  <option value="">Select Weight Category</option>
+</select>
+
+</div>
 <div class="field"><label>Club / Gym</label><input id="rclub"></div>
 
 <div class="field full"><label>Athlete Photo *</label><input id="rphoto" type="file" accept="image/*" required></div>
