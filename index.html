@@ -1806,6 +1806,65 @@ async function registerInstitution(){
   }
     }
 render();
+    function updateWeightCategories(){
+      document.getElementById('rgender').addEventListener('change', updateWeightCategories);
+
+document.getElementById('ageCategory').addEventListener('change', updateWeightCategories);
+
+  const gender = document.getElementById('rgender').value;
+  const ageCategory = document.getElementById('ageCategory').value;
+  const weightSelect = document.getElementById('weight');
+
+  weightSelect.innerHTML =
+    '<option value="">Select Weight Category</option>';
+
+  let categories = [];
+
+  if(gender === 'Male'){
+
+    if(ageCategory === 'Sub Junior' || ageCategory === 'Junior'){
+      categories.push('53 kg');
+    }
+
+    categories.push(
+      '59 kg',
+      '66 kg',
+      '74 kg',
+      '83 kg',
+      '93 kg',
+      '105 kg',
+      '120 kg',
+      '+120 kg'
+    );
+
+  }
+
+  if(gender === 'Female'){
+
+    if(ageCategory === 'Sub Junior' || ageCategory === 'Junior'){
+      categories.push('43 kg');
+    }
+
+    categories.push(
+      '47 kg',
+      '52 kg',
+      '57 kg',
+      '63 kg',
+      '69 kg',
+      '76 kg',
+      '84 kg',
+      '+84 kg'
+    );
+
+  }
+
+  categories.forEach(function(weight){
+    const option = document.createElement('option');
+    option.value = weight;
+    option.textContent = weight;
+    weightSelect.appendChild(option);
+  });
+    }
 </script>
 </body>
 </html>
