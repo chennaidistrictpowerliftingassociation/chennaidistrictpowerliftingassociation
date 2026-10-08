@@ -1045,7 +1045,72 @@ printID(id);
   }
   }
 
-function printID(id){
+async function printAthleteIDFromTools(){
+
+  const input = document.getElementById('printAthleteId');
+
+  if(!input){
+    alert('Athlete ID field not found.');
+    return;
+  }
+
+  const id = input.value.trim();
+
+  if(!id){
+    alert('Please enter Athlete ID.');
+    return;
+  }
+
+  try{
+
+    if(!sb){
+      throw new Error('Supabase connection not initialized.');
+    }
+
+    const {data,error} = await sb
+      .from('athletes')
+      .select('*')
+      .eq('id',id)
+      .single();
+
+    if(error){
+      throw error;
+    }
+
+    if(!data){
+      alert('Athlete not found.');
+      return;
+    }
+
+    const status = String(data.status || 'Pending').trim();
+
+    if(status !== 'Approved'){
+      alert(
+        'ID Card cannot be printed.\n\n' +
+        'Athlete Status: ' + status
+      );
+      return;
+    }
+
+    /*
+      Use the same athlete data for printID()
+    */
+
+    athletes = [data];
+
+    printID(data.id);
+
+  }catch(error){
+
+    alert(
+      'Athlete ID search failed: ' +
+      (error.message || JSON.stringify(error))
+    );
+
+  }
+
+}
+    function printID(id){
 
   const a = athletes.find(x => x.id === id);
   if(!a) return;
