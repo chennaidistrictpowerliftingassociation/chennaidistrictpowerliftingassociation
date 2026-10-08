@@ -1149,7 +1149,7 @@ if(!validCategory){
   alert('Registration failed: '+error.message);
   return;
     }
-
+reader.readAsDataURL(photoFile);
 athletes.push(a);
 localStorage.setItem(key,JSON.stringify(athletes));
 
