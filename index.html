@@ -789,18 +789,22 @@ async function rejectInstitution(id){
 
         </div>
 
-        <br>
+        <div style="display:flex; justify-content:flex-end; margin-top:35px;">
 
-        <b>Authorised Signatory</b><br>
-        N. Ramarao<br>
-        Secretary<br>
-        Chennai District Powerlifting Association
+  <div style="text-align:right; line-height:1.35;">
+    <b>Authorised Signatory</b><br>
+    N. Ramarao<br>
+    Secretary<br>
+    Chennai District Powerlifting Association
+  </div>
 
-        <br>
+</div>
 
-        <button class="print" onclick="window.print()">
-          Print / Save PDF
-        </button>
+<br>
+
+<button class="print" onclick="window.print()">
+  Print / Save PDF
+</button>
 
       </div>
 
@@ -1060,11 +1064,12 @@ button{padding:10px 18px;margin-top:15px}
  <b>Club/Gym:</b> ${esc(a.club||'-')}<br>
  <b>Mobile:</b> ${esc(a.mobile)}<br>
  <b>Aadhaar:</b> XXXX XXXX ${esc(a.aadhaar_last4)}
- </div>
- <div class="signatory">
-  <b>Authorised Signatory</b><br>
-  N. Ramarao<br>
-  Secretary
+ <div style="display:flex; justify-content:flex-end; margin-top:35px; padding-right:10px;">
+  <div style="text-align:right; line-height:1.4;">
+    <b>Authorised Signatory</b><br>
+    N. Ramarao<br>
+    Secretary
+  </div>
 </div>
 
 <div class="footer">
