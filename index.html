@@ -827,13 +827,30 @@ const qrUrl =
         }
 
         @media print{
-          .print{
-            display:none;
-          }
 
-          body{
-            background:white;
-          }
+  @page{
+    size:A4;
+    margin:0;
+  }
+
+  body{
+    background:white;
+    padding:0;
+    margin:0;
+  }
+
+  .card{
+    width:400px;
+    min-height:650px;
+    margin:10mm auto;
+    box-shadow:none;
+    page-break-inside:avoid;
+  }
+
+  .print{
+    display:none;
+  }
+    }
         }
       </style>
     </head>
