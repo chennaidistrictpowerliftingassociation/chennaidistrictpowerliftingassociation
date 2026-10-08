@@ -332,10 +332,42 @@ Register Institution
 </div>
 <button class="btn dark" onclick="addTournament()">Add Tournament</button>
 <h3 style="margin-top:25px">Data Tools</h3>
-<button class="btn" onclick="exportCSV()">Export Registered Athletes CSV</button>
-<button class="btn" onclick="window.print()">Print / Save as PDF</button>
-<button class="btn" onclick="clearAthletes()">Clear Local Athlete Data</button>
-</div></div></div></section>
+
+<div class="fields">
+
+  <div class="field">
+    <label>Enter Athlete ID</label>
+    <input
+      id="printAthleteId"
+      type="text"
+      placeholder="Example: CDPA-2026-0001"
+    >
+  </div>
+
+  <div class="field">
+    <label>Athlete ID Card</label>
+    <button
+      class="btn dark"
+      type="button"
+      onclick="printAthleteIDFromTools()"
+    >
+      Print Athlete ID Card
+    </button>
+  </div>
+
+</div>
+
+<button class="btn" onclick="exportCSV()">
+  Export Registered Athletes CSV
+</button>
+
+<button class="btn" onclick="window.print()">
+  Print / Save as PDF
+</button>
+
+<button class="btn" onclick="clearAthletes()">
+  Clear Local Athlete Data
+</button>
 
 <footer><div class="container"><div class="foot">
 <div><h3>CDPA</h3><p>Chennai District Powerlifting Association</p><p>Equipped • Classic • Bench Press • Dead Lift</p></div>
