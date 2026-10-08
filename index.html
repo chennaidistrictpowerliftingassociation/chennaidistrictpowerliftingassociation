@@ -1807,10 +1807,7 @@ async function registerInstitution(){
     }
 render();
     function updateWeightCategories(){
-      document.getElementById('rgender').addEventListener('change', updateWeightCategories);
-
-document.getElementById('ageCategory').addEventListener('change', updateWeightCategories);
-
+      
   const gender = document.getElementById('rgender').value;
   const ageCategory = document.getElementById('ageCategory').value;
   const weightSelect = document.getElementById('weight');
@@ -1865,6 +1862,8 @@ document.getElementById('ageCategory').addEventListener('change', updateWeightCa
     weightSelect.appendChild(option);
   });
     }
+    document.getElementById('rgender').addEventListener('change', updateWeightCategories);
+document.getElementById('ageCategory').addEventListener('change', updateWeightCategories);
 </script>
 </body>
 </html>
