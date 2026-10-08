@@ -524,6 +524,7 @@ async function rejectAthlete(id){
     }
 
     const institutions=data || [];
+    window.institutionList = institutions;
 
     const list = status === 'All'
       ? institutions
@@ -575,13 +576,16 @@ async function rejectAthlete(id){
                 `;
               }
               else if(currentStatus === 'Approved'){
-                action = `
-                  <span style="color:green">
-                    <b>Approved</b>
-                  </span>
-                `;
+  action = `
+    <span style="color:green">
+      <b>Approved</b>
+    </span>
+    <br><br>
+    <button onclick="printInstitutionID('${regNo}')">
+      Print ID
+    </button>
+  `;
               }
-
               return `
                 <tr>
                   <td>${regNo}</td>
@@ -649,6 +653,163 @@ async function rejectInstitution(id){
     alert('Institution rejection failed: ' + JSON.stringify(error));
   }
 }
+    function printInstitutionID(regNo){
+
+  const institution = window.institutionList
+    ? window.institutionList.find(x => x.registration_no === regNo)
+    : null;
+
+  if(!institution){
+    alert('Institution details not found.');
+    return;
+  }
+
+  const w = window.open('', '_blank', 'width=700,height=850');
+
+  if(!w){
+    alert('Please allow pop-ups to print the Institution ID.');
+    return;
+  }
+
+  const logo = new URL('cdpa-logo.jpg', location.href).href;
+
+  w.document.write(`
+    <html>
+    <head>
+      <title>CDPA Institution ID Card</title>
+
+      <style>
+        body{
+          font-family:Arial,sans-serif;
+          background:#eee;
+          padding:30px;
+        }
+
+        .card{
+          width:520px;
+          margin:auto;
+          background:#fff;
+          border:4px solid #690006;
+          border-radius:18px;
+          padding:25px;
+          text-align:center;
+        }
+
+        .logo{
+          width:90px;
+          height:90px;
+          object-fit:contain;
+        }
+
+        h1{
+          color:#690006;
+          margin:8px 0;
+        }
+
+        h2{
+          margin:5px 0 20px;
+        }
+
+        .details{
+          text-align:left;
+          line-height:1.8;
+          margin-top:20px;
+        }
+
+        .photo{
+          max-width:150px;
+          max-height:120px;
+          object-fit:contain;
+          margin:15px auto;
+        }
+
+        .print{
+          margin-top:25px;
+          padding:12px 20px;
+          background:#690006;
+          color:white;
+          border:0;
+          border-radius:8px;
+        }
+
+        @media print{
+          .print{
+            display:none;
+          }
+
+          body{
+            background:white;
+          }
+        }
+      </style>
+    </head>
+
+    <body>
+
+      <div class="card">
+
+        <img src="${logo}" class="logo">
+
+        <h1>CHENNAI DISTRICT</h1>
+        <h2>POWERLIFTING ASSOCIATION</h2>
+
+        <h3>INSTITUTION ID CARD</h3>
+
+        ${
+          institution.photo
+          ? `<img src="${institution.photo}" class="photo">`
+          : ''
+        }
+
+        <div class="details">
+
+          <b>Registration No:</b>
+          ${esc(institution.registration_no || '-')}<br>
+
+          <b>Institution:</b>
+          ${esc(institution.institution_name || '-')}<br>
+
+          <b>Type:</b>
+          ${esc(institution.registration_type || '-')}<br>
+
+          <b>Owner / Authorized Person:</b>
+          ${esc(institution.owner_name || '-')}<br>
+
+          <b>Mobile:</b>
+          ${esc(institution.mobile || '-')}<br>
+
+          <b>Registration Date:</b>
+          ${esc(institution.registered_date || '-')}<br>
+
+          <b>Valid Until:</b>
+          ${esc(institution.expiry_date || '-')}<br>
+
+          <b>Status:</b>
+          ${esc(institution.status || '-')}
+
+        </div>
+
+        <br>
+
+        <b>Authorised Signatory</b><br>
+        N. Ramarao<br>
+        Secretary<br>
+        Chennai District Powerlifting Association
+
+        <br>
+
+        <button class="print" onclick="window.print()">
+          Print / Save PDF
+        </button>
+
+      </div>
+
+    </body>
+    </html>
+  `);
+
+  w.document.close();
+    }
   async function filterAdminAthletes(status){
 
   try{
