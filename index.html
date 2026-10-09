@@ -1111,15 +1111,14 @@ if(!validCategory){
     const reader=new FileReader();
     alert('FILEREADER CREATED');
 
-    reader.onload=async function(){
-      alert('PHOTO READER STARTED');
+    reader.onload = async function() {
+  alert('PHOTO READER STARTED');
 
-if (!reader.result) {
-  alert('ERROR: Photo result is empty');
-  return;
-}
+  alert(reader.result
+    ? 'PHOTO DATA LOADED'
+    : 'ERROR: Photo result is empty');
 
-alert('PHOTO DATA LOADED');
+  if (!reader.result) return;
       alert('STEP 1: CONTINUING');
       const id='CDPA-'+new Date().getFullYear()+'-'+
         String(athletes.length+1).padStart(4,'0');
