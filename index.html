@@ -1114,6 +1114,12 @@ if(!validCategory){
     reader.onload=async function(){
       alert('PHOTO READER STARTED');
 
+if (!reader.result) {
+  alert('ERROR: Photo result is empty');
+  return;
+}
+
+alert('PHOTO DATA LOADED');
       const id='CDPA-'+new Date().getFullYear()+'-'+
         String(athletes.length+1).padStart(4,'0');
 
