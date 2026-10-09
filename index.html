@@ -1256,7 +1256,9 @@ async function printAthleteIDFromTools(){
 }
     function printID(id){
 
-  const a = athletes.find(x => x.id === id);
+  alert('STEP 3: BEFORE ATHLETE DATA');
+      const a = athletes.find(x => x.id === id);
+      alert('STEP 4: AFTER ATHLETE DATA');
   if(!a) return;
 
   const w = window.open('', '_blank', 'width=500,height=800');
