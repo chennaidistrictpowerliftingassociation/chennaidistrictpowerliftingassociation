@@ -1756,6 +1756,13 @@ async function registerInstitution(){
     if(photoFile){
       photo = await new Promise((resolve,reject)=>{
         const reader = new FileReader();
+        reader.onerror = function() {
+  alert('PHOTO READ ERROR: ' + reader.error);
+};
+
+reader.onabort = function() {
+  alert('PHOTO READ ABORTED');
+};
         reader.onload = () => resolve(reader.result);
         reader.onerror = reject;
         reader.readAsDataURL(photoFile);
