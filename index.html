@@ -1118,11 +1118,18 @@ if(!validCategory){
     ? 'PHOTO DATA LOADED'
     : 'ERROR: Photo result is empty');
 
-  if (!reader.result) return;
-      alert('STEP 1: CONTINUING');
-      const id='CDPA-'+new Date().getFullYear()+'-'+
-        String(athletes.length+1).padStart(4,'0');
-      alert('STEP 2: ATHLETE ID CREATED');
+  if (!reader.result) {
+  alert('ERROR: Photo result is empty');
+  return;
+}
+
+alert('PHOTO DATA LOADED');
+alert('STEP 1: CONTINUING');
+
+const id = 'CDPA-' + new Date().getFullYear() + '-' +
+  String(athletes.length + 1).padStart(4, '0');
+
+alert('STEP 2: ATHLETE ID CREATED');
 
       const a={
   id:id,
