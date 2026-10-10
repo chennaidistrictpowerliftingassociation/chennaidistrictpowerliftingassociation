@@ -1144,7 +1144,7 @@ alert('STEP 2: ATHLETE ID CREATED');
         alert('CHECK: AADHAAR VARIABLE');
         aadhaar_last4:aadhaar.slice(-4),
         discipline:document.getElementById('rdisc').value,
-        weight:document.getElementById('rweight').value.trim(),
+        weight:document.getElementById('weight').value.trim(),
         club:document.getElementById('rclub').value.trim(),
         address:document.getElementById('raddress').value.trim(),
         photo:reader.result
@@ -1889,6 +1889,7 @@ render();
     }
     document.getElementById('rgender').addEventListener('change', updateWeightCategories);
 document.getElementById('ageCategory').addEventListener('change', updateWeightCategories);
+    updateWeightCategories();
 </script>
 </body>
 </html>
